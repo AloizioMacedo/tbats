@@ -46,7 +46,8 @@ class Case(object):
         """
         best_model = self.fit_initial_model(y)
 
-        if self.components.use_arma_errors:
+        # For some reason, some residuals are getting returned as None.
+        if self.components.use_arma_errors and best_model.resid is not None:
             # Try adding ARMA to the model
             arma_model = auto_arima(best_model.resid, stationary=True, trend='n',
                                     suppress_warnings=True, error_action='ignore')
